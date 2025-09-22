@@ -1,3 +1,6 @@
+package ru.yandex.practicum.manager;
+
+import ru.yandex.practicum.constructor.*;
 import java.util.HashMap;
 import java.util.ArrayList;
 

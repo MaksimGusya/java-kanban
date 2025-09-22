@@ -1,3 +1,5 @@
+package ru.yandex.practicum.constructor;
+
 public class Subtask extends Task {
     private int idForEpic;
 

@@ -1,3 +1,8 @@
+package ru.yandex.practicum;
+
+import ru.yandex.practicum.constructor.*;
+import ru.yandex.practicum.manager.TaskManager;
+
 public class Main {
     public static void main(String[] args) {
         TaskManager taskManager = new TaskManager();
@@ -5,7 +10,7 @@ public class Main {
 
 //        Код написанный ниже использовался для проверки.
 
-        /*System.out.println(taskManager.printAllTasks());
+       /* System.out.println(taskManager.printAllTasks());
 
         Task task1 = new Task("Отдохнуть", "Поиграть в игры");
         taskManager.addTask(task1);

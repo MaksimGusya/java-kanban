@@ -1,3 +1,5 @@
+package ru.yandex.practicum.constructor;
+
 import java.util.Objects;
 
 public class Task {
