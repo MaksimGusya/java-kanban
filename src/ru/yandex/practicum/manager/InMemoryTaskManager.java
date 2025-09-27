@@ -1,19 +1,24 @@
 package ru.yandex.practicum.manager;
 
 import ru.yandex.practicum.constructor.*;
+import ru.yandex.practicum.interfaces.*;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 
-public class TaskManager {
+public class InMemoryTaskManager implements TaskManager {
     HashMap<Integer, Task> storeTask = new HashMap<>();
     HashMap<Integer, Epic> storeEpic = new HashMap<>();
     HashMap<Integer, Subtask> storeSubtask = new HashMap<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private int id = 1;
 
+    @Override
     public int createId() {
         return id++;
     }
 
+    @Override
     public ArrayList<Task> printAllTasks() {
         ArrayList<Task> allTask = new ArrayList<>();
 
@@ -28,6 +33,7 @@ public class TaskManager {
         return allTask;
     }
 
+    @Override
     public ArrayList<Epic> printAllEpic() {
         ArrayList<Epic> allEpic = new ArrayList<>();
 
@@ -42,6 +48,7 @@ public class TaskManager {
         return allEpic;
     }
 
+    @Override
     public ArrayList<Subtask> printAllSubtasks() {
         ArrayList<Subtask> allSubtask = new ArrayList<>();
 
@@ -56,12 +63,14 @@ public class TaskManager {
         return allSubtask;
     }
 
+    @Override
     public boolean removeAllTasks() {
         storeTask.clear();
         System.out.println("Task очищен!");
         return true;
     }
 
+    @Override
     public boolean removeAllEpicAndSubtasks() {
         storeEpic.clear();
         storeSubtask.clear();
@@ -69,12 +78,14 @@ public class TaskManager {
         return true;
     }
 
+    @Override
     public boolean removeAllSubtasks() {
         storeSubtask.clear();
         System.out.println("Subtask был очищен!");
         return true;
     }
 
+    @Override
     public Task getTaskById(int idTask) {
         if (storeTask.isEmpty()) {
             System.out.println("Task пустой!");
@@ -83,10 +94,13 @@ public class TaskManager {
             System.out.println("В ячейке - " + idTask + " отсуствует информация!");
             return null;
         } else {
-            return storeTask.get(idTask);
+            Task task = storeTask.get(idTask);
+            historyManager.add(task);
+            return task;
         }
     }
 
+    @Override
     public Epic getEpicById(int idEpic) {
         if (storeEpic.isEmpty()) {
             System.out.println("Epic пустой!");
@@ -95,10 +109,13 @@ public class TaskManager {
             System.out.println("В ячейке - " + idEpic + " отсуствует информация!");
             return null;
         } else {
-            return storeEpic.get(idEpic);
+            Epic epic = storeEpic.get(idEpic);
+            historyManager.add(epic);
+            return epic;
         }
     }
 
+    @Override
     public Subtask getSubtaskById(int idSubtask) {
         if (storeSubtask.isEmpty()) {
             System.out.println("Subtask пустой!");
@@ -107,10 +124,13 @@ public class TaskManager {
             System.out.println("В ячейке - " + idSubtask + " отсуствует информация!");
             return null;
         } else {
-            return storeSubtask.get(idSubtask);
+            Subtask subtask = storeSubtask.get(idSubtask);
+            historyManager.add(subtask);
+            return subtask;
         }
     }
 
+    @Override
     public Task addTask(Task task) {
         task.setId(createId());
         int keyForTask = task.getId();
@@ -121,6 +141,7 @@ public class TaskManager {
 
     }
 
+    @Override
     public Epic addEpic(Epic epic) {
         epic.setId(createId());
         int keyForEpic = epic.getId();
@@ -130,6 +151,7 @@ public class TaskManager {
         return epic;
     }
 
+    @Override
     public Subtask addSubtask(Subtask subtask) {
         Epic epic = storeEpic.get(subtask.getIdForEpic());
 
@@ -156,6 +178,7 @@ public class TaskManager {
     }
 
 
+    @Override
     public Task updateTask(int idTask, String newTitle, String newDescription, String newStatus) {
         Task task = storeTask.get(idTask);
 
@@ -183,6 +206,7 @@ public class TaskManager {
         return null;
     }
 
+    @Override
     public Epic updateEpic(int idEpic, String newTitle, String newDescription) {
         Epic epic = storeEpic.get(idEpic);
 
@@ -201,6 +225,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public Subtask updateSubtask(int idSubtask, String newTitle, String newDescription) {
         Subtask subtask = storeSubtask.get(idSubtask);
 
@@ -219,6 +244,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public boolean removeTaskById(int idTask) {
         if (storeTask.isEmpty()) {
             System.out.println("Task пуст!");
@@ -233,6 +259,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public boolean removeEpicById(int idEpic) {
         Epic epic = storeEpic.get(idEpic);
 
@@ -263,6 +290,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public boolean removeSubtaskById(int idSubtask) {
         if (storeSubtask.isEmpty()) {
             System.out.println("Subtask пуст!");
@@ -296,6 +324,7 @@ public class TaskManager {
         return true;
     }
 
+    @Override
     public ArrayList<Subtask> getAllSubtaskForEpic(int idEpic) {
         Epic epic = storeEpic.get(idEpic);
 
@@ -322,6 +351,7 @@ public class TaskManager {
 
     //Выше у меня реализовано изменение статуса Task при обновлении задачи, как по ТЗ.
     //Но мне кажется, что необходимо иметь возможность менять только статус у Task.
+    @Override
     public Task updateStatusTask(int idTask, String newStatus) {
         Task task = storeTask.get(idTask);
 
@@ -343,6 +373,7 @@ public class TaskManager {
         return null;
     }
 
+    @Override
     public Subtask updateStatusSubtask(int idSubtask, String newStatus) {
         Subtask subtask = storeSubtask.get(idSubtask);
 
@@ -368,6 +399,10 @@ public class TaskManager {
 
         System.out.println("Статус - " + newStatus + " отсутствует в списке!");
         return null;
+    }
 
+    @Override
+    public ArrayList<Task> getHistory() {
+        return historyManager.getHistory();
     }
 }

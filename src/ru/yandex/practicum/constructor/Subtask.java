@@ -13,8 +13,22 @@ public class Subtask extends Task {
     }
 
     public void setIdForEpic(int newIdForEpic) {
+        if (newIdForEpic == this.id) {
+            System.out.println("Некорректный Id!");
+            return;
+        }
         this.idForEpic = newIdForEpic;
     }
+
+    @Override
+    public void setId(int newId) {
+        if (newId == this.idForEpic) {
+            System.out.println("Некорректный Id!");
+            return;
+        }
+        super.setId(newId);
+    }
+
 
     @Override
     public String toString() {

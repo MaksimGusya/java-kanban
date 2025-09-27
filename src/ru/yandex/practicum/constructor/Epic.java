@@ -11,6 +11,16 @@ public class Epic extends Task {
     }
 
     public void addSubtaskForEpic(Subtask subtask) {
+        if (subtask == null) {
+            System.out.println("Subtask = null!");
+            return;
+        }
+
+        if (subtask.getId() == this.id) {
+            System.out.println("Нельзя добавить Epic в Epic!");
+            return;
+        }
+
         for (Subtask sub : subtaskForEpic) {
             if (sub.getTitle().equals(subtask.getTitle())) {
                 System.out.println("Такой Subtask уже существует!");
